@@ -7,28 +7,28 @@ using namespace  std;
 
 
 string Minusbigdata(const string& a,const string& b){
-        if (a.size()<b.size()){
+    if (a.size()<b.size()){
+        return Minusbigdata(b,a);
+    }
+    else{
+        if (a.size()==b.size() && a<b)
             return Minusbigdata(b,a);
+        string res;
+        int t = 0;//t用来表示减法的借位
+        for (int i=a.size()-1, j = b.size()-1;i>=0;--i,--j){
+            t =a[i]-'0'-t;
+            if (j>=0)t-=b[j]-'0';
+            res.push_back((t+10)%10+'0');
+            if (t<0)t=1;
+            else t=0;
         }
-        else{
-            if (a.size()==b.size() && a<b)
-                return Minusbigdata(b,a);
-            string res;
-            int t = 0;//t用来表示减法的借位
-            for (int i=a.size()-1, j = b.size()-1;i>=0;--i,--j){
-                t =a[i]-'0'-t;
-                if (j>=0)t-=b[j]-'0';
-                res.push_back((t+10)%10+'0');
-                if (t<0)t=1;
-                else t=0;
-            }
-            while (res.size()>1 && res.back()=='0')res.pop_back();
-            reverse(res.begin(),res.end());
+        while (res.size()>1 && res.back()=='0')res.pop_back();
+        reverse(res.begin(),res.end());
 //            reverse_copy()
-            return res;
+        return res;
 
 
-        }
+    }
 
 }
 
@@ -39,7 +39,8 @@ string Addbigdata(const string &a, const string &b){
     int i = a.size()-1,j = b.size()-1;
     for (;i>=0;--i,--j){
         t += a[i]-'0';
-        if (j>=0)t+=b[i]-'0';
+        //error 1
+        if (j>=0)t+=b[j]-'0';
         res.push_back((t%10+'0'));
         t = t/10;
     }
@@ -53,14 +54,15 @@ string Addbigdata(const string &a, const string &b){
 }
 
 //判断运算结果是否为负数，如果是返回true,否则为false;
-bool my_cmp(const string& a,const string& b) {
+bool my_cmp(const string& a,const string& b,bool& flag) {
 
     if (a[0]=='+' && b[0]=='+')return false;
     else if (a[0]=='-' && b[0]=='-')return true;
     else if (b[0]=='-'){
-        return my_cmp(b,a);
+        return my_cmp(b,a,flag);
     }
     else {
+        flag = true;
         if (a.size()>b.size()){
             return true;
         }
@@ -69,7 +71,7 @@ bool my_cmp(const string& a,const string& b) {
         }
         else {
             //利用字符串同长度下比较规则与整数比较一致的便利
-           return a.substr(1)>=b.substr(1);
+            return a.substr(1)>=b.substr(1);
         }
     }
 
@@ -77,12 +79,12 @@ bool my_cmp(const string& a,const string& b) {
 }
 
 
-void input_handler(string &a, string &b, bool &flag, bool &pBoolean) {
-    cout << "请输入两个正整数和标识符（1为加法，2为减法，以空格间隔）" << endl;
+void input_handler(string &a, string &b, bool &sym, bool &judge) {
+    cout << "请输入两个正整数和标识符（除2以外为加法，2为减法，以空格间隔）" << endl;
     string x, y;
-    int sym;
-    cin >> x >> y >>sym ;
-    if (sym==2){
+    int flag;
+    cin >> x >> y >> flag ;
+    if (flag==2){
         if (y[0]=='-'){
             y = y.substr(1);
         }
@@ -99,9 +101,8 @@ void input_handler(string &a, string &b, bool &flag, bool &pBoolean) {
         y = "+"+y;
     }
 
-    if (my_cmp(x,y)){
-        pBoolean= true;
-        flag = true;
+    if (my_cmp(x,y,judge)){
+        sym = true;
     }
     a = x.substr(1),b= y.substr(1);
 }
@@ -112,8 +113,11 @@ void input_handler(string &a, string &b, bool &flag, bool &pBoolean) {
 
 int main() {
     string a,b;
+    //控制符号位输出
     bool sym= false;
+    //判断绝对值是做差还是相加
     bool judge= false;
+
     input_handler(a, b, sym, judge);
     string res;
     if (judge)
@@ -122,7 +126,7 @@ int main() {
         res = Addbigdata(a,b);
     string opt;
     if (res!="0")
-     if (sym)
-        opt='-';
+        if (sym)
+            opt='-';
     cout<<"结果为"<<opt<<res<<endl;
 }

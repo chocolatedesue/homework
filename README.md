@@ -7,8 +7,13 @@
    - 2,3: yang
 
    - cooperation: 5 
+      - main_framework: chocolatedesue
+      - ui: yang
+      - crud interface 
+         1. user: yang
+         2. admin: chocolatedesue
 
-
+   - report: off-line-commuication
 
 > For detail information please download the detail_demand.zip 
 

@@ -1,0 +1,13 @@
+#pragma once
+env:
+  - cmd
+  - pwsh
+  - g++
+
+Tip:  cd到当前文件目录,然后依次执行下列语句
+
+compile: g++ main.cpp -o Library -O2 -std=c++14
+
+run: # try other if unreadable code occured  
+ - chcp 65001 && cls && .\Library 
+ - chcp 936 && cls && .\Library 

@@ -5,8 +5,10 @@ using namespace std;
 #define _VSSTUDIO
 
 int main(int argc, char* argv[]) {
+	//启动类加载资源
 	Library library;
 
+	//处理命令行参数 判断用户
 	#ifndef _VSSTUDIO
 		cmdline::parser parser;
 		parser.add<string>("type", 't', "the type of user，one of {admin,reader}", true, "", cmdline::oneof<string>("admin", "reader"));

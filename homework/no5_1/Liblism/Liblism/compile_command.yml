@@ -4,7 +4,9 @@ env:
   - pwsh
   - g++
 
-Tip:  cd到当前文件目录,然后依次执行下列语句
+Tip:  
+  - cd到当前文件目录,然后依次执行下列语句
+  - 可能用到的命令 set path = %path%; g++所在文件夹的地址
 
 compile: g++ main.cpp -o Library -O2 -std=c++14
 

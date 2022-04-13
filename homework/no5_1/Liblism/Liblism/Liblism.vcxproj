@@ -149,7 +149,9 @@
   <ItemGroup>
     <ClInclude Include="basic_member.h" />
     <ClInclude Include="bits\stdc++.h" />
+    <ClInclude Include="cmdline.h" />
     <ClInclude Include="Library.h" />
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

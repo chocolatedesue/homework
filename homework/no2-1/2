@@ -1,0 +1,128 @@
+#include<stdio.h>
+#include<iostream>
+#include<string.h>
+using namespace std;
+#define SIZE 1000//栈的大小
+//The first part:栈 
+struct stack{
+	int array[SIZE];
+	int top;//模拟指针,标记栈顶 
+}; 
+//初始化栈
+void initialize(stack* p){
+	p->top=-1;
+	memset(p->array,0,sizeof(int)*SIZE);
+}
+//The second part:函数部分 
+
+//判断是否空栈
+bool isEmpty(stack* p){
+	if(p->top==-1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+//判断是否满栈
+bool isFull(stack* p){
+   if(p->top==SIZE-1){
+   	return true;
+   }
+   else {
+   	return false;
+   }
+} 
+//返回栈顶元素 
+int getTop(stack* p){
+	return p->array[p->top];
+}
+//入栈
+void push(stack* p,int pushNumber){
+    if(isFull(p)){
+    	cout<<"Error:Stack Overflow!"<<endl;
+	}
+	else{
+		p->array[p->top+1]=pushNumber;
+		p->top++;
+	}
+}
+//出栈
+void pop(stack* p){
+     if(isEmpty(p)){
+     	cout<<"Error:The Empty Stack Can Not Be Ejected!"<<endl;
+	 }
+	 else{
+	 	printf("%d\n",p->array[p->top]);
+	 	p->top--;
+	 }
+}
+//输出栈中的元素 
+void display(stack* p){
+	while(!isEmpty(p)){
+		printf("%d\n",p->array[p->top]);
+		p->top--;
+	}
+}
+//栈中元素数目 
+int sum(stack* p){
+	return p->top+1;
+}
+//The third part:main方法部分
+int main(){
+	stack Stack;
+	int i=0,pushNumber=0;
+	initialize(&Stack);
+	while(1){
+		cout<<"请选择要执行的操作：" 
+		<<"1.入栈 "
+		<<"2.出栈 "
+		<<"3.返回栈顶元素"
+		<<"4.判断是否满栈"
+		<<"5.判断是否空栈"
+		<<"6.栈中元素数量" 
+		<<"7.输出栈中的元素"
+		<<"8.结束操作"
+		<<endl;
+		cin>>i;
+		switch(i){
+			case 1: 
+			   cout<<"请输入入栈元素："<<endl;
+			   cin>>pushNumber;
+			   push(&Stack,pushNumber);
+			   break;
+			case 2:
+				pop(&Stack);
+				break;
+			case 3:
+				cout<<"栈顶元素为："<<getTop(&Stack)<<endl;
+				break; 
+			case 4:
+				if(isFull(&Stack)){
+					cout<<"满栈!"<<endl; 
+				}
+				else{
+				    cout<<"未满栈!"<<endl; 
+				}
+				break;
+			case 5:
+				if(isEmpty(&Stack)){
+					cout<<"空栈!"<<endl; 
+				}
+				else{
+				    cout<<"非空栈!"<<endl; 
+				}
+				break;
+			case 6:
+				cout<<"栈中共有"<<sum(&Stack)<<"个元素"; 
+				break;
+			case 7:
+				display(&Stack);
+				break;
+			case 8:
+				return 0;
+			default:
+				cout<<"Input Error!"<<endl;	
+		} 
+	}
+} 

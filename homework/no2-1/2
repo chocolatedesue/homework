@@ -1,18 +1,21 @@
 #include<stdio.h>
 #include<iostream>
 #include<string.h>
+#include <windows.h>
+
 using namespace std;
 #define SIZE 1000//栈的大小
 //The first part:栈 
 struct stack{
 	int array[SIZE];
 	int top;//模拟指针,标记栈顶 
+	//初始化
+	stack(){
+		this->top=-1;
+		memset(this->array,0,sizeof(int)*SIZE);
+	}
 }; 
-//初始化栈
-void initialize(stack* p){
-	p->top=-1;
-	memset(p->array,0,sizeof(int)*SIZE);
-}
+
 //The second part:函数部分 
 
 //判断是否空栈
@@ -53,7 +56,7 @@ void pop(stack* p){
      	cout<<"Error:The Empty Stack Can Not Be Ejected!"<<endl;
 	 }
 	 else{
-	 	printf("%d\n",p->array[p->top]);
+	 	printf("出栈元素为%d\n",p->array[p->top]);
 	 	p->top--;
 	 }
 }
@@ -72,18 +75,19 @@ int sum(stack* p){
 int main(){
 	stack Stack;
 	int i=0,pushNumber=0;
-	initialize(&Stack);
+	SetConsoleOutputCP(65001);
 	while(1){
-		cout<<"请选择要执行的操作：" 
-		<<"1.入栈 "
-		<<"2.出栈 "
-		<<"3.返回栈顶元素"
-		<<"4.判断是否满栈"
-		<<"5.判断是否空栈"
-		<<"6.栈中元素数量" 
-		<<"7.输出栈中的元素"
-		<<"8.结束操作"
-		<<endl;
+		cout << "请选择要执行的操作：\n"
+			 << "1.入栈 \n"
+			 << "2.出栈 \n"
+			 << "3.返回栈顶元素\n"
+			 << "4.判断是否满栈\n"
+			 << "5.判断是否空栈\n"
+			 << "6.栈中元素数量\n"
+			 << "7.输出栈中的元素\n"
+			 << "8.结束操作\n"
+			 << "请输入所选择操作的序号："
+			 << endl;
 		cin>>i;
 		switch(i){
 			case 1: 
@@ -123,6 +127,8 @@ int main(){
 				return 0;
 			default:
 				cout<<"Input Error!"<<endl;	
-		} 
+			
+		}
+		cout<<"---------------------"<<"\n"<<"\n"; 
 	}
 } 

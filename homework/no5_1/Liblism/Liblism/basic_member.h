@@ -8,71 +8,34 @@
 
 #pragma once
 #include "bits/stdc++.h"
-//using namespace std;
+using namespace std;
 
 
 class reader {
-
-public:
-    const std::string& getName() const {
-        return name;
-    }
-
-    void setName(const std::string& name) {
-        reader::name = name;
-    }
-
-    int getId() const {
-        return id;
-    }
-
-    void setId(int id) {
-        reader::id = id;
-    }
-
-private:
-    int id;
 public:
     reader(int id, const std::string& name) : id(id), name(name) {}
-
-private:
-    std::string name;
-public:
-
     reader() {}
+    std::string name;
+    int id;
+    bool operator==(reader temp)const {
+        return temp.id == id && temp.name == name;
+    }
+    bool operator<(reader temp) const {
+        return id < temp.id;
+    }
+
+
+
 };
 
 
 class book {
 public:
-    const std::string& getName() const {
-        return name;
-    }
-
-    void setName(const std::string& name) {
-        book::name = name;
-    }
-
-    int getId() const {
-        return id;
-    }
-
-    void setId(int id) {
-        book::id = id;
-    }
-
-    int getNum() const {
-        return num;
-    }
-
-    void setNum(int num) {
-        book::num = num;
-    }
-
-private:
     std::string name;
     //书的编号和书的数目
     int id, num;
+
+
 public:
     book(const std::string& name, int id, int num) : name(name), id(id), num(num) {}
     book() {}
@@ -83,17 +46,36 @@ public:
 class admin {
 
 
-private:
-    int id;
 public:
-    admin(int id, const std::string& name, const std::string& passwd) : id(id), name(name), passwd(passwd) {}
-    admin() {}
-private:
+    int id;
     std::string name;
     std::string passwd;
 
+    //set<admin>admin_list;
+
+public:
+    bool operator<(const admin& temp)const {
+        return id < temp.id;
+    }
+    bool operator==(admin temp)const {
+        return temp.id == id && temp.name == name && temp.passwd == temp.passwd;
+
+    }
+    admin(const int& id, const std::string& name, const std::string& passwd) : id(id), name(name), passwd(passwd) {}
+    admin() {}
+
+
+
+  
 };
 
+class Login {
+
+public:
+    std::string name;
+    int id;
+    Login():name(""), id(0) {};
+};
 
 
 #endif //LIBSIM_BASIC_MEMBER_H

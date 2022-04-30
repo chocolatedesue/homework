@@ -32,7 +32,9 @@ class Library
 	//通过书名找借给的人的id
 	std::map<int, std::vector<int>> lent_book;
 
-	std::map<int, admin> admin_list;
+	std::set<admin>admin_list;
+	//std::set<reader>reader_list;
+
 
 	void info_parser(string mess)
 	{
@@ -61,7 +63,7 @@ class Library
 		string admin_name = pos->str();
 		pos++;
 		string admin_passwd = pos->str();
-		admin_list[admin_id] = admin{ admin_id, admin_name, admin_passwd };
+		admin_list.insert(admin{ admin_id,admin_name,admin_passwd });
 	}
 
 	void add_lent_book(int user_id, int book_id)
@@ -96,7 +98,7 @@ class Library
 		}
 		else
 		{
-			id_booklist[book_id].setNum(id_booklist[book_id].getNum() + 1);
+			id_booklist[book_id].num+=1;
 		}
 	}
 
@@ -117,7 +119,7 @@ class Library
 			//freopen("info_table.csv", "w", stdout);
 			fp = fopen("info_table.csv", "w");
 			fputs("1,user,1,星星之火可以燎原", fp);
-	
+
 			fclose(fp);
 		}
 
@@ -125,7 +127,7 @@ class Library
 			/*freopen("info_table.csv", "r", stdin);*/
 			ifstream inFile("info_table.csv");
 			string temp;
-			while (getline(inFile,temp))
+			while (getline(inFile, temp))
 			{
 				cout << temp << endl;
 				info_parser(temp);
@@ -138,7 +140,7 @@ class Library
 	{
 
 		FILE* fp = fopen("admin_table.csv", "r");
-
+		//ifstream fp("admin_table.csv")
 		if (fp == NULL)
 		{
 			cout << "程序加载失败，请检查是否存在初始化文件admin_table.csv" << endl;
@@ -154,7 +156,7 @@ class Library
 			ifstream inFile("admin_table.csv");
 
 			string temp;
-			while (getline(inFile,temp))
+			while (getline(inFile, temp))
 			{
 				cout << temp << endl;
 				admin_parser(temp);
@@ -177,6 +179,25 @@ public:
 		data_loader();
 		cout << "数据加载结束" << endl;
 	}
+
+	bool check_valid_admin(const int& id, const string& name, const string& passwd) {
+		admin login = admin(id, name, passwd);
+		auto res = *(lower_bound(admin_list.begin(), admin_list.end(), login));
+		if (res == login) {
+			return true;
+		}
+		else return false;
+
+	}
+	/*bool check_valid_reader(const int& id, const string& name) {
+		reader login = reader(id, name);
+		auto res = *(lower_bound(reader_list.begin(), reader_list.end(), login));
+		if (res == login) {
+			return true;
+		}
+		else return false;
+	}*/
+
 };
 
 #endif // LIBSIM_LIBRARY_H

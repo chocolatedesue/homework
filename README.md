@@ -21,4 +21,4 @@
 
 2. requirement:
    - Usually snake case naming (except the demand in the detail_demand.zip)
-   - Strictly follow the requirements in the detail_demand.zip(function to implement, naming and so on )
+   - Strictly follow the requirements in the detail_demand.zip(function to implement, naming and so on 

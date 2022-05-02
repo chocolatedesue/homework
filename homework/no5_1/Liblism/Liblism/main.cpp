@@ -4,6 +4,7 @@
 
 using namespace std;
 
+Library library;
 
 enum Model {
 	ADMIN = 0, READER = 1
@@ -90,9 +91,34 @@ Model commandline_parse(int argc, char* argv[], Library& library)
 
 
 
-int main(int argc, char* argv[]) {
-	Library library;
 
+class admin_opt {
+public:
+	void static insert_book(const book& src) {
+		bool flag = true;
+		for (auto& item : library.remain_book_list) {
+			if (item.name == src.name) {
+				auto temp = item;
+				temp.num++;
+				library.remain_book_list.erase(item);
+				library.remain_book_list.insert(temp);
+				flag = false;
+			}
+		}
+		if (flag) {
+			library.remain_book_list.insert(src);
+
+		}
+		return;
+
+	}
+
+};
+
+
+int main(int argc, char* argv[]) {
+	
+	
 #ifndef _DEVELOP
 	Model model = commandline_parse(argc, argv, library);
 #endif // _DEVELOP
@@ -105,8 +131,11 @@ int main(int argc, char* argv[]) {
 	}
 	else {
 		// admin界面的函数
+		//admin opt;
+		////admin.
+		//admin_opt::insert_book({ "x",1,1 });
 
-
+		
 	}
 
 

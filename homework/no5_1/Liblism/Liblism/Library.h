@@ -17,6 +17,9 @@ using namespace std;
 
 class Library
 {
+
+//资源类
+public:
 	//通过id 查找书
 	std::map<int, book> id_booklist;
 
@@ -29,13 +32,17 @@ class Library
 	//通过书名找书id
 	std::map<std::string, int> name_booklistname_id;
 
-	//通过书名找借给的人的id
+	//通过书id找借给的人的id(借走的书）
 	std::map<int, std::vector<int>> lent_book;
 
+	//管理员信息
 	std::set<admin>admin_list;
-	//std::set<reader>reader_list;
+	
+	//剩下的书
+	std::set<book>remain_book_list;
 
-
+//加载类
+private:
 	void info_parser(string mess)
 	{
 		regex pat(R"(,)");
@@ -65,6 +72,19 @@ class Library
 		string admin_passwd = pos->str();
 		admin_list.insert(admin{ admin_id,admin_name,admin_passwd });
 	}
+	void remain_book_parser(string mess) {
+		regex pat(R"(,)");
+		sregex_token_iterator pos(mess.begin(), mess.end(), pat, -1);
+		sregex_token_iterator end;
+		int	book_id = stoi(pos->str());
+		pos++;
+		string book_name = pos->str();
+		pos++;
+		int  book_num = stoi(pos->str());
+		remain_book_list.insert(book{book_name,book_id,book_num});
+
+	}
+
 
 	void add_lent_book(int user_id, int book_id)
 	{
@@ -104,20 +124,51 @@ class Library
 
 	void data_loader()
 	{
+		system("mkdir data");
 		info_loader();
 		admin_loader();
+		book_loader();
+	}
+
+	void book_loader() {
+		FILE* fp = fopen("./data/remain_book_table.csv", "r");
+		if (!fp)
+		{
+
+			cout << "程序加载失败，请检查是否存在初始化文件remain_book_table.csv" << endl;
+			std::cout << "自动生成初始化文件remain_book_table.csv中" << std::endl;
+			//freopen("info_table.csv", "w", stdout);
+			fp = fopen("./data/remain_book_table.csv", "w");
+			fputs("1,星星之火可以燎原,1", fp);
+
+			fclose(fp);
+		}
+
+		{
+			/*freopen("info_table.csv", "r", stdin);*/
+			ifstream inFile("./data/remain_book_table.csv");
+			string temp;
+			while (getline(inFile, temp))
+			{
+				cout << temp << endl;
+				remain_book_parser(temp);
+			}
+			inFile.close();
+		}
+
+		fclose(fp);
 	}
 
 	void info_loader()
 	{
-		FILE* fp = fopen("info_table.csv", "r");
+		FILE* fp = fopen("./data/info_table.csv", "r");
 		if (!fp)
 		{
 
 			cout << "程序加载失败，请检查是否存在初始化文件info_table.csv" << endl;
 			std::cout << "自动生成初始化文件info_table.csv中" << std::endl;
 			//freopen("info_table.csv", "w", stdout);
-			fp = fopen("info_table.csv", "w");
+			fp = fopen("./data/info_table.csv", "w");
 			fputs("1,user,1,星星之火可以燎原", fp);
 
 			fclose(fp);
@@ -125,7 +176,7 @@ class Library
 
 		{
 			/*freopen("info_table.csv", "r", stdin);*/
-			ifstream inFile("info_table.csv");
+			ifstream inFile("./data/info_table.csv");
 			string temp;
 			while (getline(inFile, temp))
 			{
@@ -134,18 +185,20 @@ class Library
 			}
 			inFile.close();
 		}
+
+		fclose(fp);
 	}
 
 	void admin_loader()
 	{
-
-		FILE* fp = fopen("admin_table.csv", "r");
+		
+		FILE* fp = fopen("./data/admin_table.csv", "r");
 		//ifstream fp("admin_table.csv")
 		if (fp == NULL)
 		{
 			cout << "程序加载失败，请检查是否存在初始化文件admin_table.csv" << endl;
 			std::cout << "自动生成初始化文件admin_table.csv中" << std::endl;
-			fp = fopen("admin_table.csv", "w");
+			fp = fopen("./data/admin_table.csv", "w");
 			fputs("1,admin,123456", fp);
 			//cout << "1,admin,123456" << endl;
 			fclose(fp);
@@ -153,7 +206,7 @@ class Library
 
 		{
 			//freopen("admin_table.csv","r",stdin);
-			ifstream inFile("admin_table.csv");
+			ifstream inFile("./data/admin_table.csv");
 
 			string temp;
 			while (getline(inFile, temp))
@@ -163,6 +216,7 @@ class Library
 			}
 			inFile.close();
 		}
+		fclose(fp);
 	}
 
 
@@ -171,7 +225,7 @@ class Library
 
 
 
-
+//初始化类
 public:
 	Library()
 	{

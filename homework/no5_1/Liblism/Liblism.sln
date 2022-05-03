@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Liblism", "Liblism\Liblism.
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		admin_test|x64 = admin_test|x64
+		admin_test|x86 = admin_test|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
@@ -17,22 +19,20 @@ Global
 		测试登录Reader|x86 = 测试登录Reader|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.admin_test|x64.ActiveCfg = admin_test|x64
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.admin_test|x64.Build.0 = admin_test|x64
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.admin_test|x86.ActiveCfg = admin_test|Win32
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.admin_test|x86.Build.0 = admin_test|Win32
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Debug|x64.ActiveCfg = Debug|x64
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Debug|x64.Build.0 = Debug|x64
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Debug|x86.ActiveCfg = Debug|Win32
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Debug|x86.Build.0 = Debug|Win32
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Release|x64.ActiveCfg = 测试登录Reader|x64
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Release|x64.Build.0 = 测试登录Reader|x64
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Release|x64.ActiveCfg = Release|x64
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Release|x86.ActiveCfg = Release|Win32
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Release|x86.Build.0 = Release|Win32
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录|x64.ActiveCfg = 测试登录Admin|x64
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录|x64.Build.0 = 测试登录Admin|x64
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录|x86.ActiveCfg = 测试登录Admin|Win32
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录|x86.Build.0 = 测试登录Admin|Win32
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录Reader|x64.ActiveCfg = 测试登录Admin|x64
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录Reader|x64.Build.0 = 测试登录Admin|x64
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录Reader|x86.ActiveCfg = 测试登录Reader|Win32
-		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录Reader|x86.Build.0 = 测试登录Reader|Win32
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录|x64.ActiveCfg = admin_test|x64
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录|x86.ActiveCfg = admin_test|Win32
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录Reader|x64.ActiveCfg = admin_test|x64
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.测试登录Reader|x86.ActiveCfg = admin_test|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

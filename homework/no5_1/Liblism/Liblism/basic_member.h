@@ -42,6 +42,9 @@ public:
 	bool operator < (const book& temp)const {
 		return id < temp.id;
 	}
+	bool operator == (const book& temp)const {
+		return id == temp.id && name == temp.name;
+	}
 	book(const std::string& name, int id, int num) : name(name), id(id), num(num) {}
 	book() {}
 };

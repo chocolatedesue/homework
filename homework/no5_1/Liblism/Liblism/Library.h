@@ -35,11 +35,17 @@ public:
 	//通过书id找借给的人的id(借走的书）
 	std::map<int, std::vector<int>> lent_book;
 
+	
 	//管理员信息
 	std::set<admin>admin_list;
 	
+	//读者信息
+	std::set<reader>reader_list;
 	//剩下的书
-	std::set<book>remain_book_list;
+	//1. user 借书，还书, 查询自己的书     2. admin 图书录入 
+ 	std::set<book>remain_book_list;
+
+
 
 //加载类
 private:
@@ -122,14 +128,58 @@ private:
 		}
 	}
 
+	void user_info_parser(string mess) {
+		regex pat(R"(,)");
+		sregex_token_iterator pos(mess.begin(), mess.end(), pat, -1);
+		sregex_token_iterator end;
+		int id = stoi(pos->str());
+		pos++;
+		string name = pos->str();
+		reader_list.insert(reader(id, name));
+	}
+
+
 	void data_loader()
 	{
 		system("mkdir data");
 		info_loader();
 		admin_loader();
+		reader_loader();
 		book_loader();
 	}
 
+
+
+	void reader_loader() {
+		FILE* fp = fopen("./data/reader_table.csv", "r");
+		if (!fp)
+		{
+
+			cout << "程序加载失败，请检查是否存在初始化文件reader_table.csv" << endl;
+			std::cout << "自动生成初始化文件reader_table.csv中" << std::endl;
+			//freopen("info_table.csv", "w", stdout);
+			fp = fopen("./data/reader_table.csv", "w");
+			fputs("1,user", fp);
+
+			fclose(fp);
+		}
+
+		{
+			/*freopen("info_table.csv", "r", stdin);*/
+			ifstream inFile("./data/reader_table.csv");
+			string temp;
+			while (getline(inFile, temp))
+			{
+				cout << temp << endl;
+				user_info_parser(temp);
+			}
+			inFile.close();
+		}
+
+		fclose(fp);
+
+
+	}
 	void book_loader() {
 		FILE* fp = fopen("./data/remain_book_table.csv", "r");
 		if (!fp)
@@ -243,14 +293,14 @@ public:
 		else return false;
 
 	}
-	/*bool check_valid_reader(const int& id, const string& name) {
+	bool check_valid_reader(const int& id, const string& name) {
 		reader login = reader(id, name);
 		auto res = *(lower_bound(reader_list.begin(), reader_list.end(), login));
 		if (res == login) {
 			return true;
 		}
 		else return false;
-	}*/
+	}
 
 };
 

@@ -77,10 +77,14 @@ Model commandline_parse(int argc, char* argv[], Library& library)
 	}
 	else {
 		model = READER;
-
-		cout << "欢迎读者" << name << "登录" << endl;
-
-
+		if (library.check_valid_reader(id, name))
+		{
+			cout << "欢迎读者" << name << "登录" << endl;
+		}
+		else {
+			cout << "信息错误，请检查信息" << endl;
+			exit(0);
+		}
 
 	}
 
@@ -107,9 +111,38 @@ public:
 		}
 		if (flag) {
 			library.remain_book_list.insert(src);
-
 		}
 		return;
+
+	}
+	void static drop_book(const book& src) {
+		auto& tar = library.remain_book_list;
+		auto get = lower_bound(tar.begin(), tar.end(), src);
+		if ((*get) == src) {
+			tar.erase(get);
+			cout << "操作成功，已删除" << src.name << endl;
+		}
+		else cout << "查无此书，删除错误" << endl;
+
+	}
+	
+	void static update_book(const book& src, int num) {
+		auto& tar = library.remain_book_list;
+		auto get = lower_bound(tar.begin(), tar.end(), src);
+		if ((*get) == src) {
+			tar.erase(get);
+			auto temp = *get;
+			if (temp.num + num <= 0) {
+				cout << "更新错误，检查是否超出书数目的范围" << endl;
+			}
+			else {
+				temp.num += num;
+				tar.insert(temp);
+				cout << "更新成功,"<<temp.name<<"变更"<<num<<"本" << endl;
+			}
+			//cout << "操作成功，已删除" << src.name << endl;
+		}
+		else cout << "查无此书，修改错误错误" << endl;
 
 	}
 
@@ -134,6 +167,22 @@ int main(int argc, char* argv[]) {
 		//admin opt;
 		////admin.
 		//admin_opt::insert_book({ "x",1,1 });
+		while (true) {
+			cout << "请选择操作" << "\n"
+				<< "1. 增加图书" << "\n"
+				<< "2. 删除图书" << "\n"
+				<< "3. 修改图书" << "\n";
+			int opt; 
+			scanf("%d", &opt);
+			switch (opt)
+			{
+				
+			default:
+				break;
+			}
+
+
+		}
 
 		
 	}

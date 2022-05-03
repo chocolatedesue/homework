@@ -9,16 +9,16 @@ Library library;
 enum Model {
 	ADMIN = 0, READER = 1
 };
-//ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ï¢
+//µÇÂ¼ÕßÐÅÏ¢
 Login login;
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½
+//³ÌÐòÖ÷Ñ­»·²Î¿¼º¯Êý
 //while (true) {
-//	//todo: ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¶Ï²ï¿½ï¿½ï¿½
+//	//todo: ÌáÊ¾ÐÔÊä³ö  »ñÈ¡ÊäÈë ÅÐ¶Ï²½Öè
 //	switch (1)
 //	{
 //	case quit:
-//		cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl;
+//		cout << "³ÌÐò½áÊø" << endl;
 //		flag = false;
 //	}
 //	if (!flag)break;
@@ -26,12 +26,12 @@ Login login;
 
 
 
-//#define _DEVELOP  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½â£¬ï¿½ï¿½×¢ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½
+//#define _DEVELOP  // Èç¹û²»ÓÃÃüÁîÐÐ²ÎÊý¼ì²â£¬Çë×¢ÊÍµô¸ÃÐÐ
 
 
 
 
-// todo:ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½caseï¿½ï¿½ï¿½Ä¿É¶ï¿½ï¿½ï¿½
+// todo:ÓÃÃ¶¾ÙÌæ´ú³£Á¿£¬Ôö¼ÓcaseÓï¾äµÄ¿É¶ÁÐÔ
 enum Choice {
 	INSERT = 1,
 	DROP,
@@ -43,7 +43,7 @@ enum Choice {
 
 
 
-//ï¿½Ð¶Ï³ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ë³ï¿½
+//ÅÐ¶Ï³ÌÐòÊÇ·ñ¸ÃÍË³ö
 bool flag = true;
 
 
@@ -51,9 +51,9 @@ bool flag = true;
 Model commandline_parse(int argc, char* argv[], Library& library)
 {
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ ï¿½Ð¶ï¿½ï¿½Ã»ï¿½
+	//´¦ÀíÃüÁîÐÐ²ÎÊý ÅÐ¶ÏÓÃ»§
 	cmdline::parser parser;
-	parser.add<string>("type", 't', "the type of userï¿½ï¿½one of {Admin,Reader}", true, "", cmdline::oneof<string>("Admin", "Reader"));
+	parser.add<string>("type", 't', "the type of user£¬one of {Admin,Reader}", true, "", cmdline::oneof<string>("Admin", "Reader"));
 	parser.add<string>("name", 'n', "your name", true);
 	parser.add<int>("id", 'i', "your id", true);
 	parser.add<string>("passwd", 'p', "the passwd of admin if login as admin", false, "");
@@ -72,10 +72,10 @@ Model commandline_parse(int argc, char* argv[], Library& library)
 	if (type == "Admin") {
 		model = ADMIN;
 		if (library.check_valid_admin(id, name, passwd)) {
-			cout << "ï¿½ï¿½Ó­ï¿½ï¿½ï¿½ï¿½Ô±" << name << "ï¿½ï¿½Â¼" << endl;
+			cout << "»¶Ó­¹ÜÀíÔ±" << name << "µÇÂ¼" << endl;
 		}
 		else {
-			cout << "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢" << endl;
+			cout << "ÐÅÏ¢´íÎó£¬Çë¼ì²éÐÅÏ¢" << endl;
 			exit(0);
 		}
 	}
@@ -83,10 +83,10 @@ Model commandline_parse(int argc, char* argv[], Library& library)
 		model = READER;
 		if (library.check_valid_reader(id, name))
 		{
-			cout << "ï¿½ï¿½Ó­ï¿½ï¿½ï¿½ï¿½" << name << "ï¿½ï¿½Â¼" << endl;
+			cout << "»¶Ó­¶ÁÕß" << name << "µÇÂ¼" << endl;
 		}
 		else {
-			cout << "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢" << endl;
+			cout << "ÐÅÏ¢´íÎó£¬Çë¼ì²éÐÅÏ¢" << endl;
 			exit(0);
 		}
 
@@ -113,13 +113,13 @@ public:
 				library.remain_book_list.erase(item);
 				library.remain_book_list.insert(temp);
 				flag = false;*/
-				cout << "ï¿½ï¿½ï¿½Ð´ï¿½ï¿½é£¬ï¿½ï¿½Ê¹ï¿½Ã¸ï¿½ï¿½Â²ï¿½ï¿½ï¿½" << endl;
+				cout << "ÒÑÓÐ´ËÊé£¬ÇëÊ¹ÓÃ¸üÐÂ²Ù×÷" << endl;
 				flag = false;
 			}
 		}
 		if (flag) {
 			library.remain_book_list.insert(src);
-			cout << "ï¿½ï¿½" << src.name << "ï¿½ï¿½ï¿½ï¿½ï¿½Ó³É¹ï¿½,idÎª" << src.id<<endl;
+			cout << "Êé" << src.name << "ÒÑÌí¼Ó³É¹¦,idÎª" << src.id<<endl;
 		}
 
 		return;
@@ -131,9 +131,9 @@ public:
 		if (get != tar.end() && (*get).id == id) {
 			tar.erase(get);
 			string name = (*get).name;
-			cout << "ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½" << name << endl;
+			cout << "²Ù×÷³É¹¦£¬ÒÑÉ¾³ý" << name << endl;
 		}
-		else cout << "ï¿½ï¿½ï¿½Þ´ï¿½ï¿½é£¬É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl;
+		else cout << "²éÎÞ´ËÊé£¬É¾³ý´íÎó" << endl;
 
 	}
 
@@ -144,16 +144,16 @@ public:
 			tar.erase(get);
 			auto temp = *get;
 			if (temp.num + num <= 0) {
-				cout << "ï¿½ï¿½ï¿½Â´ï¿½ï¿½ó£¬¼ï¿½ï¿½ï¿½Ç·ñ³¬³ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½Ä·ï¿½Î§" << endl;
+				cout << "¸üÐÂ´íÎó£¬¼ì²éÊÇ·ñ³¬³öÊéÊýÄ¿µÄ·¶Î§" << endl;
 			}
 			else {
 				temp.num += num;
 				tar.insert(temp);
-				cout << "ï¿½ï¿½ï¿½Â³É¹ï¿½," << temp.name << "ï¿½ï¿½ï¿½" << num << "ï¿½ï¿½" << endl;
+				cout << "¸üÐÂ³É¹¦," << temp.name << "±ä¸ü" << num << "±¾" << endl;
 			}
-			//cout << "ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½" << src.name << endl;
+			//cout << "²Ù×÷³É¹¦£¬ÒÑÉ¾³ý" << src.name << endl;
 		}
-		else cout << "ï¿½ï¿½ï¿½Þ´ï¿½ï¿½é£¬ï¿½Þ¸Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" << endl;
+		else cout << "²éÎÞ´ËÊé£¬ÐÞ¸Ä´íÎó´íÎó" << endl;
 
 	}
 
@@ -168,22 +168,22 @@ int main(int argc, char* argv[]) {
 #endif // _DEVELOP
 
 
-	//ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½login
+	//µÇÂ¼¶ÔÏóÊÇlogin
 	if (model == READER) {
-		//ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½
+		//´¦ÀíÓÃ»§½çÃæµÄº¯Êý
 		;
 	}
 	else {
-		// adminï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½
+		// admin½çÃæµÄº¯Êý
 		//admin opt;
 		////admin.
 		//admin_opt::insert_book({ "x",1,1 });
 		while (true) {
-			cout << "ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½" << "\n"
-				<< "1. ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½" << "\n"
-				<< "2. É¾ï¿½ï¿½Í¼ï¿½ï¿½" << "\n"
-				<< "3. ï¿½ï¿½Ñ¯Í¼ï¿½ï¿½" << "\n"
-				<< "4. ï¿½Þ¸ï¿½Í¼ï¿½ï¿½" << "\n";
+			cout << "ÇëÑ¡Ôñ²Ù×÷" << "\n"
+				<< "1. Ôö¼ÓÍ¼Êé" << "\n"
+				<< "2. É¾³ýÍ¼Êé" << "\n"
+				<< "3. ²éÑ¯Í¼Êé" << "\n"
+				<< "4. ÐÞ¸ÄÍ¼Êé" << "\n";
 			int opt;
 			scanf("%d", &opt);
 			switch (opt)
@@ -191,7 +191,7 @@ int main(int argc, char* argv[]) {
 
 			case INSERT:
 			{
-				cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿" << endl;
+				cout << "ÇëÊäÈëÒªÔöÌíµÄÊéÃûºÍÔöÌíµÄÊýÄ¿" << endl;
 				string name; int num;
 				cin >> name >> num;
 				book temp(name, 1, num);
@@ -200,7 +200,7 @@ int main(int argc, char* argv[]) {
 			}
 			case DROP:
 			{
-				cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÉ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½id" << endl;
+				cout << "ÇëÊäÈëÒªÉ¾³ýµÄÊéµÄid" << endl;
 				int id;
 				cin >> id;
 				admin_opt::drop_book(id);
@@ -212,7 +212,7 @@ int main(int argc, char* argv[]) {
 			}
 			case UPDATE:
 			{
-				cout << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½ï¿½ï¿½Ä¿" << endl;
+				cout << "ÇëÊäÈëÒª±ä¸üµÄÊéµÄidºÍÊýÄ¿" << endl;
 				int id, num;
 				cin >> id >> num;
 				admin_opt::update_book(id, num);

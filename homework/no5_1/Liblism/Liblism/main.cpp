@@ -37,7 +37,14 @@ enum Choice {
 	DROP,
 	QUERY,
 	UPDATE,
+	//QUIT
+	INSERTUSER,
+	DROPUSER,
+	QUERYUSER,
 	//quit = 10,
+
+
+	QUIT,
 };
 
 
@@ -119,7 +126,7 @@ public:
 		}
 		if (flag) {
 			library.remain_book_list.insert(src);
-			cout << "书" << src.name << "已添加成功,id为" << src.id<<endl;
+			cout << "书" << src.name << "已添加成功,id为" << src.id << endl;
 		}
 
 		return;
@@ -139,7 +146,7 @@ public:
 
 	void static update_book(int id, int num) {
 		auto& tar = library.remain_book_list;
-		auto get = lower_bound(tar.begin(), tar.end(), book("_",id,1));
+		auto get = lower_bound(tar.begin(), tar.end(), book("_", id, 1));
 		if (get != tar.end() && (*get).id == id) {
 			tar.erase(get);
 			auto temp = *get;
@@ -159,6 +166,56 @@ public:
 
 };
 
+//将数据序列化
+void close_session() {
+
+	FILE* fp = fopen(R"(./data/admin_table.csv)", "w");
+	//fputs("sad", fp);
+	if (fp)
+	{
+		for (auto& item : library.admin_list) {
+			string res = item.id + "," + item.name;
+			fputs(res.c_str(), fp);
+		}
+	}
+	fclose(fp);
+
+	fp = fopen(R"(./data/reader_table.csv)", "w");
+	if (fp) {
+		for (auto& item : library.reader_list) {
+			string res = item.id + "," + item.name;
+			fputs(res.c_str(), fp);
+		}
+	}
+	fclose(fp);
+
+	fp = fopen(R"(./data/info_table.csv)", "w");
+	if (fp) {
+		for (auto& item : library.lent_book) {
+			book b1 = library.id_booklist[item.first];
+			/*reader r1 = library*/
+			reader r1 = library.id_reader[item.second];
+
+			string res = to_string(r1.id) + "," + r1.name + "," + to_string(b1.id) + b1.name;
+			fputs(res.c_str(), fp);
+
+		}
+
+	}
+
+	fclose(fp);
+
+	fp = fopen(R"(./data/remain_book_table.csv)", "w");
+	if (fp) {
+		for (auto& item : library.remain_book_list) {
+			string res = item.id + "," + item.name;
+			fputs(res.c_str(), fp);
+		}
+
+	}
+	fclose(fp);
+
+}
 
 int main(int argc, char* argv[]) {
 
@@ -204,9 +261,10 @@ int main(int argc, char* argv[]) {
 				int id;
 				cin >> id;
 				admin_opt::drop_book(id);
+				break;
 			}
 
-			case QUERY: 
+			case QUERY:
 			{
 				;
 			}
@@ -216,9 +274,34 @@ int main(int argc, char* argv[]) {
 				int id, num;
 				cin >> id >> num;
 				admin_opt::update_book(id, num);
-
+				break;
 			}
 
+			case INSERTUSER:
+			{
+				cout << "请输入要插入的用户名" << endl;
+				string name;
+				cin >> name;
+
+				break;
+			}
+			case DROPUSER:
+			{
+
+				break;
+			}
+
+			case QUERYUSER: 
+			{
+				break;
+			}
+
+			case QUIT:
+			{
+				close_session();
+				cout << "应用结束" << endl;
+				exit(0);
+			}
 			default:
 				break;
 			}

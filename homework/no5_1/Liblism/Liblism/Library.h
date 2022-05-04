@@ -33,7 +33,7 @@ public:
 	std::map<std::string, int> name_booklistname_id;
 
 	//通过书id找借给的人的id(借走的书）
-	std::map<int, std::vector<int>> lent_book;
+	std::map<int, int> lent_book;
 
 	
 	//管理员信息
@@ -94,12 +94,8 @@ private:
 
 	void add_lent_book(int user_id, int book_id)
 	{
-		if (!lent_book.count(book_id))
-		{
-			lent_book[book_id] = vector<int>(1, user_id);
-		}
-		else
-			lent_book[book_id].push_back(user_id);
+		
+			lent_book[book_id]=user_id;
 	}
 
 	void add_id_reader(int user_id, const string& user_name)

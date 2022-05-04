@@ -174,7 +174,8 @@ void close_session() {
 	if (fp)
 	{
 		for (auto& item : library.admin_list) {
-			string res = item.id + "," + item.name;
+			string res = to_string(item.id) + "," + item.name;
+			//cout <<res<<" "<< res.c_str() << endl;
 			fputs(res.c_str(), fp);
 		}
 	}
@@ -183,7 +184,7 @@ void close_session() {
 	fp = fopen(R"(./data/reader_table.csv)", "w");
 	if (fp) {
 		for (auto& item : library.reader_list) {
-			string res = item.id + "," + item.name;
+			string res = to_string(item.id) + "," + item.name;
 			fputs(res.c_str(), fp);
 		}
 	}
@@ -196,7 +197,7 @@ void close_session() {
 			/*reader r1 = library*/
 			reader r1 = library.id_reader[item.second];
 
-			string res = to_string(r1.id) + "," + r1.name + "," + to_string(b1.id) + b1.name;
+			string res = to_string(r1.id) + "," + r1.name + "," + to_string(b1.id) +","+ b1.name;
 			fputs(res.c_str(), fp);
 
 		}
@@ -208,7 +209,7 @@ void close_session() {
 	fp = fopen(R"(./data/remain_book_table.csv)", "w");
 	if (fp) {
 		for (auto& item : library.remain_book_list) {
-			string res = item.id + "," + item.name;
+			string res = to_string(item.id) + "," + item.name;
 			fputs(res.c_str(), fp);
 		}
 

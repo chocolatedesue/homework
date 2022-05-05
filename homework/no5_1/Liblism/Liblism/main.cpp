@@ -109,6 +109,16 @@ Model commandline_parse(int argc, char* argv[], Library& library)
 
 class admin_opt {
 public:
+	void static query_book() {
+		cout << "Ê£ÓàµÄÊé" << endl <<"id"<< "---"<<"name"<<"---"<<"num" << endl;
+		for (auto& item : library.remain_book_list) {
+			cout << item.id << " " << item.name << " " << item.num<<endl;
+
+		}
+
+	}
+
+
 	void static insert_book(const book& src) {
 		//auto& tar = library.remain_book_list;
 		//auto get = lower_bound(tar.begin(), tar.end(), book("asd", src, 1));
@@ -174,7 +184,7 @@ void close_session() {
 	if (fp)
 	{
 		for (auto& item : library.admin_list) {
-			string res = to_string(item.id) + "," + item.name;
+			string res = to_string(item.id) + "," + item.name+","+item.passwd;
 			//cout <<res<<" "<< res.c_str() << endl;
 			fputs(res.c_str(), fp);
 		}
@@ -197,7 +207,7 @@ void close_session() {
 			/*reader r1 = library*/
 			reader r1 = library.id_reader[item.second];
 
-			string res = to_string(r1.id) + "," + r1.name + "," + to_string(b1.id) +","+ b1.name;
+			string res = to_string(r1.id) + "," + r1.name + "," + to_string(b1.id) + "," + b1.name+",";
 			fputs(res.c_str(), fp);
 
 		}
@@ -209,7 +219,7 @@ void close_session() {
 	fp = fopen(R"(./data/remain_book_table.csv)", "w");
 	if (fp) {
 		for (auto& item : library.remain_book_list) {
-			string res = to_string(item.id) + "," + item.name;
+			string res = to_string(item.id) + "," + item.name +","+ to_string(item.num);
 			fputs(res.c_str(), fp);
 		}
 
@@ -267,7 +277,8 @@ int main(int argc, char* argv[]) {
 
 			case QUERY:
 			{
-				;
+				admin_opt::query_book();
+				break;
 			}
 			case UPDATE:
 			{
@@ -292,7 +303,7 @@ int main(int argc, char* argv[]) {
 				break;
 			}
 
-			case QUERYUSER: 
+			case QUERYUSER:
 			{
 				break;
 			}

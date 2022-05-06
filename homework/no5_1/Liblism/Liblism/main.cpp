@@ -1,14 +1,12 @@
 #include"bits/stdc++.h"
 #include"Library.h"
 #include"cmdline.h"
+#include "main.h"
 
 using namespace std;
 
 Library library;
 
-enum Model {
-	ADMIN = 0, READER = 1
-};
 //登录者信息
 Login login;
 
@@ -31,21 +29,7 @@ Login login;
 
 
 
-// todo:用枚举替代常量，增加case语句的可读性
-enum Choice {
-	INSERT = 1,
-	DROP,
-	QUERY,
-	UPDATE,
-	//QUIT
-	INSERTUSER,
-	DROPUSER,
-	QUERYUSER,
-	//quit = 10,
 
-
-	QUIT,
-};
 
 
 
@@ -54,65 +38,45 @@ enum Choice {
 bool flag = true;
 
 
-
-Model commandline_parse(int argc, char* argv[], Library& library)
-{
-
-	//处理命令行参数 判断用户
-	cmdline::parser parser;
-	parser.add<string>("type", 't', "the type of user，one of {Admin,Reader}", true, "", cmdline::oneof<string>("Admin", "Reader"));
-	parser.add<string>("name", 'n', "your name", true);
-	parser.add<int>("id", 'i', "your id", true);
-	parser.add<string>("passwd", 'p', "the passwd of admin if login as admin", false, "");
-	parser.parse_check(argc, argv);
+int main(int argc, char* argv[]) {
 
 
+#ifndef _DEVELOP
+	Model model = commandline_parse(argc, argv, library);
+#endif // _DEVELOP
 
-	cout << "----------------------------" << endl;
-	string type = parser.get<string>("type"), name = parser.get<string>("name"), passwd = parser.get<string>("passwd");
-	int id = parser.get<int>("id");
-	login.name = name;
-	login.id = id;
 
-	Model model;
-
-	if (type == "Admin") {
-		model = ADMIN;
-		if (library.check_valid_admin(id, name, passwd)) {
-			cout << "欢迎管理员" << name << "登录" << endl;
-		}
-		else {
-			cout << "信息错误，请检查信息" << endl;
-			exit(0);
-		}
+	//登录对象是login
+	if (model == READER) {
+		//处理用户界面的函数
+		;
 	}
 	else {
-		model = READER;
-		if (library.check_valid_reader(id, name))
-		{
-			cout << "欢迎读者" << name << "登录" << endl;
-		}
-		else {
-			cout << "信息错误，请检查信息" << endl;
-			exit(0);
-		}
+		// admin界面的函数
+		//admin opt;
+		admin_loop();
 
 	}
 
 
 
-	return model;
+	return 0;
 }
 
 
 
 
+
+
+// ---------------------------------子模块-------------------------------//
+
+
 class admin_opt {
 public:
 	void static query_book() {
-		cout << "剩余的书" << endl <<"id"<< "---"<<"name"<<"---"<<"num" << endl;
+		cout << "剩余的书" << endl << "id" << "---" << "name" << "---" << "num" << endl;
 		for (auto& item : library.remain_book_list) {
-			cout << item.id << " " << item.name << " " << item.num<<endl;
+			cout << item.id << " " << item.name << " " << item.num << endl;
 
 		}
 
@@ -174,7 +138,123 @@ public:
 
 	}
 
+	void static insert_reader(int id, string name) {
+		auto& tar = library.reader_list;
+		tar.insert({ id,name });
+	}
+
+	void static drop_reader(int id) {
+		auto& tar = library.reader_list;
+		auto ans = lower_bound(tar.begin(), tar.end(), reader{ id,"_" });
+		if (ans != tar.end()) {
+			cout << (*ans).name << "已经删除" << endl;
+		}
+		else {
+			cout << "查无此人，请检查输入" << endl;
+		}
+	}
+
+	void static query_user() {
+		auto& tar = library.reader_list;
+		cout << "id---" << "name" << endl;
+		for (auto item : tar) {
+			cout << item.id << " " << item.name << endl;
+		}
+
+	}
+
 };
+
+
+void admin_loop()
+{
+
+	while (true) {
+		cout << "请选择操作" << "\n"
+			<< "1. 增加图书" << "\n"
+			<< "2. 删除图书" << "\n"
+			<< "3. 查询图书" << "\n"
+			<< "4. 修改图书" << "\n"
+			<< "5. 增加读者" << "\n"
+			<< "6. 删除读者" << "\n"
+			<< "7. 查询读者" << "\n"
+		<< "8. 退出程序" << endl;
+		int opt;
+		scanf("%d", &opt);
+		switch (opt)
+		{
+
+		case INSERT:
+		{
+			cout << "请输入要增添的书名和增添的数目" << endl;
+			string name; int num;
+			cin >> name >> num;
+			library.admin_num++;
+			book temp(name, library.admin_num, num);
+			admin_opt::insert_book(temp);
+			break;
+		}
+		case DROP:
+		{
+			cout << "请输入要删除的书的id" << endl;
+			int id;
+			cin >> id;
+			admin_opt::drop_book(id);
+			break;
+		}
+
+		case QUERY:
+		{
+			admin_opt::query_book();
+			break;
+		}
+		case UPDATE:
+		{
+			cout << "请输入要变更的书的id和数目" << endl;
+			int id, num;
+			cin >> id >> num;
+			admin_opt::update_book(id, num);
+			break;
+		}
+
+		case INSERTUSER:
+		{
+			cout << "请输入要插入的用户名" << endl;
+			string name;
+			cin >> name;
+			library.reader_num++;
+			admin_opt::insert_reader(library.reader_num, name);
+			break;
+		}
+		case DROPUSER:
+		{
+			int id;
+			cout << "请输入要删除的的用户id" << endl;
+			cin >> id;
+			admin_opt::drop_reader(id);
+			break;
+		}
+
+		case QUERYUSER:
+		{
+			admin_opt::query_user();
+			break;
+		}
+
+		case QUIT:
+		{
+			close_session();
+			cout << "应用结束" << endl;
+			exit(0);
+		}
+		default:
+			break;
+		}
+
+
+	}
+
+}
 
 //将数据序列化
 void close_session() {
@@ -184,7 +264,7 @@ void close_session() {
 	if (fp)
 	{
 		for (auto& item : library.admin_list) {
-			string res = to_string(item.id) + "," + item.name+","+item.passwd;
+			string res = to_string(item.id) + "," + item.name + "," + item.passwd;
 			//cout <<res<<" "<< res.c_str() << endl;
 			fputs(res.c_str(), fp);
 		}
@@ -207,7 +287,7 @@ void close_session() {
 			/*reader r1 = library*/
 			reader r1 = library.id_reader[item.second];
 
-			string res = to_string(r1.id) + "," + r1.name + "," + to_string(b1.id) + "," + b1.name+",";
+			string res = to_string(r1.id) + "," + r1.name + "," + to_string(b1.id) + "," + b1.name + ",";
 			fputs(res.c_str(), fp);
 
 		}
@@ -219,112 +299,72 @@ void close_session() {
 	fp = fopen(R"(./data/remain_book_table.csv)", "w");
 	if (fp) {
 		for (auto& item : library.remain_book_list) {
-			string res = to_string(item.id) + "," + item.name +","+ to_string(item.num);
+			string res = to_string(item.id) + "," + item.name + "," + to_string(item.num);
 			fputs(res.c_str(), fp);
 		}
 
 	}
 	fclose(fp);
 
+
+
+	fp = fopen(R"(./data/config.txt)", "w");
+	if (fp) {
+		
+		string res = to_string(library.book_num) + " " + to_string(library.admin_num) + " " + to_string(library.reader_num);
+		
+		fputs(res.c_str(), fp);
+
+	}
+	fclose(fp);
 }
 
-int main(int argc, char* argv[]) {
+
+Model commandline_parse(int argc, char* argv[], Library& library)
+{
+
+	//处理命令行参数 判断用户
+	cmdline::parser parser;
+	parser.add<string>("type", 't', "the type of user，one of {Admin,Reader}", true, "", cmdline::oneof<string>("Admin", "Reader"));
+	parser.add<string>("name", 'n', "your name", true);
+	parser.add<int>("id", 'i', "your id", true);
+	parser.add<string>("passwd", 'p', "the passwd of admin if login as admin", false, "");
+	parser.parse_check(argc, argv);
 
 
-#ifndef _DEVELOP
-	Model model = commandline_parse(argc, argv, library);
-#endif // _DEVELOP
 
+	cout << "----------------------------" << endl;
+	string type = parser.get<string>("type"), name = parser.get<string>("name"), passwd = parser.get<string>("passwd");
+	int id = parser.get<int>("id");
+	login.name = name;
+	login.id = id;
 
-	//登录对象是login
-	if (model == READER) {
-		//处理用户界面的函数
-		;
+	Model model;
+
+	if (type == "Admin") {
+		model = ADMIN;
+		if (library.check_valid_admin(id, name, passwd)) {
+			cout << "欢迎管理员" << name << "登录" << endl;
+		}
+		else {
+			cout << "信息错误，请检查信息" << endl;
+			exit(0);
+		}
 	}
 	else {
-		// admin界面的函数
-		//admin opt;
-		////admin.
-		//admin_opt::insert_book({ "x",1,1 });
-		while (true) {
-			cout << "请选择操作" << "\n"
-				<< "1. 增加图书" << "\n"
-				<< "2. 删除图书" << "\n"
-				<< "3. 查询图书" << "\n"
-				<< "4. 修改图书" << "\n";
-			int opt;
-			scanf("%d", &opt);
-			switch (opt)
-			{
-
-			case INSERT:
-			{
-				cout << "请输入要增添的书名和增添的数目" << endl;
-				string name; int num;
-				cin >> name >> num;
-				book temp(name, 1, num);
-				admin_opt::insert_book(temp);
-				break;
-			}
-			case DROP:
-			{
-				cout << "请输入要删除的书的id" << endl;
-				int id;
-				cin >> id;
-				admin_opt::drop_book(id);
-				break;
-			}
-
-			case QUERY:
-			{
-				admin_opt::query_book();
-				break;
-			}
-			case UPDATE:
-			{
-				cout << "请输入要变更的书的id和数目" << endl;
-				int id, num;
-				cin >> id >> num;
-				admin_opt::update_book(id, num);
-				break;
-			}
-
-			case INSERTUSER:
-			{
-				cout << "请输入要插入的用户名" << endl;
-				string name;
-				cin >> name;
-
-				break;
-			}
-			case DROPUSER:
-			{
-
-				break;
-			}
-
-			case QUERYUSER:
-			{
-				break;
-			}
-
-			case QUIT:
-			{
-				close_session();
-				cout << "应用结束" << endl;
-				exit(0);
-			}
-			default:
-				break;
-			}
-
-
+		model = READER;
+		if (library.check_valid_reader(id, name))
+		{
+			cout << "欢迎读者" << name << "登录" << endl;
 		}
-
+		else {
+			cout << "信息错误，请检查信息" << endl;
+			exit(0);
+		}
 
 	}
 
 
 
-	return 0;
+	return model;
 }

@@ -20,6 +20,7 @@ class Library
 
 //资源类
 public:
+	int reader_num, admin_num, book_num;
 	//通过id 查找书
 	std::map<int, book> id_booklist;
 
@@ -138,13 +139,40 @@ private:
 	void data_loader()
 	{
 		system("mkdir data");
+		config_load();
 		info_loader();
 		admin_loader();
 		reader_loader();
 		book_loader();
 	}
 
+	void config_load() {
 
+		//格式书的个数，admin的个数，用户的个数
+		FILE* fp = fopen("./data/config.txt", "r");
+		if (!fp)
+		{
+
+			cout << "程序加载失败，请检查是否存在初始化文件config.txt" << endl;
+			fp = fopen("./data/config.txt", "w");
+			fputs("1 1 1", fp);
+			fclose(fp);
+		}
+
+		{
+			
+			ifstream inFile("./data/config.txt");
+			string temp;
+			//getline(cin, temp);
+			getline(inFile, temp);
+			cout << temp +"  "<<temp.size() << endl;
+			book_num = temp[0], admin_num = temp[2], reader_num = temp[4];
+
+		}
+
+		fclose(fp);
+
+	}
 
 	void reader_loader() {
 		FILE* fp = fopen("./data/reader_table.csv", "r");

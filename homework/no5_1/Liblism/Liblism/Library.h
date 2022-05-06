@@ -138,7 +138,7 @@ private:
 
 	void data_loader()
 	{
-		system("mkdir data");
+		system("if not exist data (mkdir data)");
 		config_load();
 		info_loader();
 		admin_loader();

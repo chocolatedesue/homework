@@ -1,0 +1,80 @@
+#include<stdio.h>
+#include<stdlib.h>
+#pragma pack(1)//将结构体数据强制连续排列，防止编译器自动对齐
+//定义bmp的起始部分
+typedef struct {
+	unsigned short int type;
+	unsigned int size;
+	unsigned short int reserved1, reserved2;
+	unsigned int offset;
+}FILEHEADER;
+typedef struct {
+	unsigned int size;/*信息头大小（以字节为单位）*/
+	int height,width;/*图像的高度和宽度*/
+	unsigned int planes;/*彩色平面数*/
+	unsigned short int bits;/*每像素色彩位数*/
+	unsigned int compression;/*压缩类型*/
+	unsigned int imagesize;/*以字节为单位*/
+	unsigned int xresolution, yresolution;/*每米的像素*/ 
+	unsigned int ncolors;/*颜色的数量*/
+	unsigned int importantcolors;/*重要颜色的数量*/  
+}INFOHEADER;
+
+//储存给定文件的起始部分
+FILEHEADER src_fh;	
+INFOHEADER src_ih;
+
+//存储目标文件的起始部分
+FILEHEADER dst_fh;
+INFOHEADER dst_ih;
+
+unsigned int *src_pixels;//存贮目给定文件的所有像素点数据
+unsigned int *dst_pixels;//存贮目目标文件的所有像素点数据
+
+//实现图像缩放的函数
+void changeBmpFile(const char* filenameOne, const char* filenameTwo, double t) {
+	FILE* fp;
+	FILE* dst;
+	//打开给定文件和目标文件
+	fp = fopen(filenameOne,"rb");
+	dst= fopen(filenameTwo,"wb");
+	if (fp==NULL) {
+		printf("ERROR! FILE OPENING FAILURE!");
+	}
+	//读取给定文件的信息并保存
+	fread(&src_fh, sizeof(FILEHEADER), 1, fp);
+	fread(&src_ih, sizeof(INFOHEADER),1,fp);
+	int size = src_ih.height * src_ih.width;
+	src_pixels = (unsigned int*)malloc(sizeof(int)*size);
+	fread(&src_pixels,sizeof(int),size,fp);
+	//计算缩放后产生的文件的大小
+	int height = (int)(src_ih.height * t);
+	int width = (int)(src_ih.width * t);
+	int newsize = height * width;
+	//申请数据存储的动态内存
+	dst_pixels=(unsigned int*)malloc(sizeof(unsigned int) * newsize);
+	dst = fopen(filenameTwo, "wb");
+	//更改目标文件起始部分的数据
+	dst_fh = src_fh;
+	dst_ih = src_ih;
+	dst_ih.height = height;
+	dst_ih.width = width;
+	//将位图数据全部置于目标文件存储的数组中
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			int m = (int)(i / t) * src_ih.height + (int)(j / t);
+			dst_pixels[i * height + j] = src_pixels[m];
+		}
+	}
+	//将数据写入文件中
+	fwrite(&dst_fh,sizeof(FILEHEADER),1,dst);
+	fwrite(&dst_ih,sizeof(INFOHEADER),1,dst);
+	fwrite(dst_pixels,newsize,sizeof(int),dst);
+	fclose(fp);
+	fclose(dst);
+	int main(int argc, char** argv) {
+	double a = atoi(argv[2]) / 100.0;
+	changeBmpFile(argv[1],argv[3],a);
+	printf("图像缩放已完成！");
+	return 0;
+}

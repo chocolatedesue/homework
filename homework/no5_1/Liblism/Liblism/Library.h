@@ -20,21 +20,23 @@ class Library
 
 //资源类
 public:
+	//维护四个借阅信息，三个全局配置信息
+
 	int reader_num, admin_num, book_num;
-	//通过id 查找书
+	//通过id 查找书 真正图书
 	std::map<int, book> id_booklist;
 
-	//通过id找读者
+	//通过id找读者 真正读者
 	std::map<int, reader> id_reader;
 
 	//通过读者名字找读者id (不允许重名)
 	std::map<std::string, int> name_reader_id;
 
 	//通过书名找书id
-	std::map<std::string, int> name_booklistname_id;
+	std::map<std::string, int> name_book_id;
 
-	//通过书id找借给的人的id(借走的书）
-	std::map<int, int> lent_book;
+	////通过书id找借给的人的id(借走的书） 不用序列化，程序维护信息即可
+	std::map<int, vector<int> > lent_book;
 
 	
 	//管理员信息
@@ -56,17 +58,22 @@ private:
 		sregex_token_iterator pos(mess.begin(), mess.end(), pat, -1);
 		sregex_token_iterator end;
 		int user_id = stoi(pos->str());
-		pos++;
-		string user_name = pos->str();
+		//pos++;
+		//string user_name = pos->str();
 		pos++;
 		int book_id = stoi(pos->str());
 		pos++;
 		string book_name = pos->str();
 		add_id_book_list(book_id, book_name);
-		add_id_reader(user_id, user_name);
+		
+		id_reader[user_id].lent_book.push_back(book_id);
 		add_lent_book(user_id, book_id);
+		
 	}
 
+	void add_lent_book(int uid, int bid) {
+		lent_book[bid].push_back(uid);
+	}
 	void admin_parser(string mess)
 	{
 		regex pat(R"(,)");
@@ -79,6 +86,7 @@ private:
 		string admin_passwd = pos->str();
 		admin_list.insert(admin{ admin_id,admin_name,admin_passwd });
 	}
+
 	void remain_book_parser(string mess) {
 		regex pat(R"(,)");
 		sregex_token_iterator pos(mess.begin(), mess.end(), pat, -1);
@@ -89,35 +97,36 @@ private:
 		pos++;
 		int  book_num = stoi(pos->str());
 		remain_book_list.insert(book{book_name,book_id,book_num});
-
+		id_booklist[book_id] = { book_name,book_id,book_num };
 	}
 
 
-	void add_lent_book(int user_id, int book_id)
+	/*void add_lent_book(int user_id, int book_id)
 	{
 		
 			lent_book[book_id]=user_id;
-	}
+	}*/
 
-	void add_id_reader(int user_id, const string& user_name)
-	{
-		if (!id_reader.count(user_id))
-		{
-			id_reader[user_id] = reader{ user_id, user_name };
-			name_reader_id[user_name] = user_id;
-		}
-		else
-		{
-			cout << "读者id重复，添加失败" << endl;
-		}
-	}
+	//void add_id_reader(int user_id, const string& user_name)
+	//{
+	//	//if (!id_reader.count(user_id))
+	//	//{
+	//		id_reader[user_id] = reader{ user_id, user_name };
+	//		name_reader_id[user_name] = user_id;
+
+	//	/*}
+	//	else
+	//	{
+	//		cout << "读者id重复，添加失败" << endl;
+	//	}*/
+	//}
 
 	void add_id_book_list(int book_id, const string& book_name)
 	{
 		if (!id_booklist.count(book_id))
 		{
 			id_booklist[book_id] = book{ book_name, book_id, 1 };
-			name_booklistname_id[book_name] = book_id;
+			name_book_id[book_name] = book_id;
 		}
 		else
 		{
@@ -133,40 +142,61 @@ private:
 		pos++;
 		string name = pos->str();
 		reader_list.insert(reader(id, name));
+		id_reader[id] = { id,name };
+		name_reader_id[name] = id;
 	}
 
+	void config_parser(string mess) {
+		regex pat(R"(,)");
+		sregex_token_iterator pos(mess.begin(), mess.end(), pat, -1);
+		sregex_token_iterator end;
+		book_num = stoi(pos->str());
+		pos++;
+		admin_num = stoi(pos->str());
+		pos++;
+		reader_num = stoi(pos->str());
+		/*string name = pos->str();
+		reader_list.insert(reader(id, name));
+		id_reader[id] = { id,name };
+		name_reader_id[name] = id;*/
+
+	}
 
 	void data_loader()
 	{
-		system("mkdir data");
+		system("if not exist data (mkdir data) > nul");
 		config_load();
-		info_loader();
 		admin_loader();
 		reader_loader();
 		book_loader();
+
+		info_loader();
+		
 	}
 
 	void config_load() {
 
 		//格式书的个数，admin的个数，用户的个数
-		FILE* fp = fopen("./data/config.txt", "r");
+		FILE* fp = fopen("./data/config.csv", "r");
 		if (!fp)
 		{
 
-			cout << "程序加载失败，请检查是否存在初始化文件config.txt" << endl;
-			fp = fopen("./data/config.txt", "w");
-			fputs("1 1 1", fp);
+			cout << "程序加载失败，请检查是否存在初始化文件config.csv" << endl;
+			fp = fopen("./data/config.csv", "w");
+			fputs("2,1,1", fp);
 			fclose(fp);
 		}
 
 		{
 			
-			ifstream inFile("./data/config.txt");
+			ifstream inFile("./data/config.csv");
 			string temp;
 			//getline(cin, temp);
 			getline(inFile, temp);
-			cout << temp +"  "<<temp.size() << endl;
-			book_num = temp[0], admin_num = temp[2], reader_num = temp[4];
+			cout << temp << endl;
+			config_parser(temp);
+			//cout << temp +"  "<<temp.size() << endl;
+			//book_num = stoi(temp[0]), admin_num = temp[2], reader_num = temp[4];
 
 		}
 
@@ -243,7 +273,7 @@ private:
 			std::cout << "自动生成初始化文件info_table.csv中" << std::endl;
 			//freopen("info_table.csv", "w", stdout);
 			fp = fopen("./data/info_table.csv", "w");
-			fputs("1,user,1,星星之火可以燎原", fp);
+			fputs("1,2,共产党宣言", fp);
 
 			fclose(fp);
 		}

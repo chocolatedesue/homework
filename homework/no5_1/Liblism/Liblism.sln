@@ -11,6 +11,8 @@ Global
 		admin_test|x86 = admin_test|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		reader_test|x64 = reader_test|x64
+		reader_test|x86 = reader_test|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 		测试登录|x64 = 测试登录|x64
@@ -26,6 +28,10 @@ Global
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Debug|x64.ActiveCfg = Debug|x64
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Debug|x86.ActiveCfg = Debug|Win32
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Debug|x86.Build.0 = Debug|Win32
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.reader_test|x64.ActiveCfg = reader_test|x64
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.reader_test|x64.Build.0 = reader_test|x64
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.reader_test|x86.ActiveCfg = reader_test|Win32
+		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.reader_test|x86.Build.0 = reader_test|Win32
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Release|x64.ActiveCfg = Release|x64
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Release|x86.ActiveCfg = Release|Win32
 		{3F4E3DB9-32AA-42D9-A778-055BD1476E3C}.Release|x86.Build.0 = Release|Win32

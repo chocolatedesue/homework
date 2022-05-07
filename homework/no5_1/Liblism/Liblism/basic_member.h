@@ -19,6 +19,7 @@ public:
 	reader() {}
 	std::string name;
 	int id;
+	vector<int>lent_book;
 	bool operator==(reader temp)const {
 		return temp.id == id && temp.name == name;
 	}

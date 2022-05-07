@@ -164,7 +164,7 @@ private:
 
 	void data_loader()
 	{
-		system("if not exist data (mkdir data) > null");
+		system("if not exist data (mkdir data) > nul");
 		config_load();
 		admin_loader();
 		reader_loader();

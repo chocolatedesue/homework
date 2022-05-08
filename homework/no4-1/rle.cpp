@@ -35,7 +35,7 @@ public:
                     return -1;
                 } else {
                     cnt = count_duplicate(in_buffer, srcLeft);
-                    // è·å–é‡å¤å­—æ•° å¹¶ä»¥charä¿å­˜  å–ä½7ä½ æœ€å¤šåªèƒ½å‹ç¼©2^7-1ä¸ªå­—ç¬¦
+                    // »ñÈ¡ÖØ¸´×ÖÊı ²¢ÒÔchar±£´æ  È¡µÍ7Î» ×î¶àÖ»ÄÜÑ¹Ëõ2^7-1¸ö×Ö·û
                     out_buffer[encSize++] = cnt | 0x80;
                     out_buffer[encSize++] = *in_buffer;
                     in_buffer += cnt;
@@ -67,12 +67,12 @@ public:
         while (decSize < src_size) {
             unsigned char sign = *in_buffer;
             in_buffer++;
-            //è·å–ä½7ä½
+            //»ñÈ¡µÍ7Î»
             int cnt = sign & 0x7f;
             if (decSize + cnt > buffer_size) {
                 return -1;
             }
-            //å¯¹åº”å‹ç¼©æ•°æ®
+            //¶ÔÓ¦Ñ¹ËõÊı¾İ
             if ((sign & 0x80) == 0x80) {
                 for (int i = 0; i <= cnt; ++i) {
                     out_buffer[decSize++] = *in_buffer;
@@ -143,14 +143,14 @@ int main(int argc, char **argv) {
     try {
         if (argc == 4) {
             input = ifstream(argv[1], ios::in);
-            // ios::trunc å¦‚æœæ–‡ä»¶å·²å­˜åœ¨åˆ™å…ˆåˆ é™¤è¯¥æ–‡ä»¶
+            // ios::trunc Èç¹ûÎÄ¼şÒÑ´æÔÚÔòÏÈÉ¾³ı¸ÃÎÄ¼ş
             output = ofstream(argv[3], ios::out  | ios::trunc);
 
             if (!input.is_open() || !output.is_open()) {
-                throw ("æ–‡ä»¶æ‰“å¼€å¤±è´¥,è¯·æ£€æŸ¥ç¬¬ä¸€ä¸ªæ–‡ä»¶æ˜¯å¦å­˜åœ¨");
+                throw ("ÎÄ¼ş´ò¿ªÊ§°Ü,Çë¼ì²éµÚÒ»¸öÎÄ¼şÊÇ·ñ´æÔÚ");
             }
         } else {
-            throw ("å‚æ•°æ•°é‡ä¸å¯¹ï¼Œè¯·æ£€æŸ¥å‚æ•°");
+            throw ("²ÎÊıÊıÁ¿²»¶Ô£¬Çë¼ì²é²ÎÊı");
         }
     }
     catch (const char *&msg) {
@@ -169,9 +169,9 @@ int main(int argc, char **argv) {
     }
 
     if (res == -1) {
-        cout << "æ–‡ä»¶è¿‡å¤§ï¼Œç¼“å†²åŒºæº¢å‡º" << endl;
+        cout << "ÎÄ¼ş¹ı´ó£¬»º³åÇøÒç³ö" << endl;
     } else {
-        cout << "æ‰§è¡Œå®Œæ¯•,è¯·æŸ¥çœ‹æ–‡ä»¶" << argv[3] << endl;
+        cout << "Ö´ĞĞÍê±Ï,Çë²é¿´ÎÄ¼ş" << argv[3] << endl;
     }
 
     output.write((char*)out_buffer,res);

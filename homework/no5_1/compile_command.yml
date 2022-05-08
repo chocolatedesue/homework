@@ -1,0 +1,27 @@
+#pragma once
+env:
+  - cmd
+  - pwsh
+  - g++
+
+Tip:  
+  - cd到当前文件目录,然后依次执行下列语句
+  - 可能用到的命令 set path = %path%; g++所在文件夹的地址
+
+compile: g++ main.cpp -o Library -O2 -std=c++14
+
+run: # try other if unreadable code occured 
+#  run as admin 
+ - chcp 65001 && cls && .\Library -t Admin -i 1 -n admin -p 123456  
+ - chcp 936 && cls && .\Library -t Admin -i 1 -n admin -p 123456  
+#  run as reader 
+ - chcp 65001 && cls && .\Library  -t Reader -i 1 -n user
+ - chcp 936 && cls && .\Library  -t Reader -i 1 -n user
+
+
+---
+env: 
+  - visual studio 2022
+  - chose the admin_test or reader_test config
+
+run: just check the button "run" after start the project 

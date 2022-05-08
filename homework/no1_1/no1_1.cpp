@@ -2,9 +2,9 @@
 
 using namespace std;
 
-//é«˜ç²¾è¿ç®—åªå¥½å¤„ç†æ­£æ•°è¿ç®—, å°†ç¬¦å·ä½é¢å¤–å¤„ç†
-//å¯¹äº+-æ³•ï¼Œå°†ç¬¦å·ä½å’Œæ•°å€¼ä¸ºåˆ†å¼€ï¼Œè½¬åŒ–ä¸ºç»å¯¹å€¼è¿ç®—
-// stringä¸ºè½½ä½“å­˜å‚¨ 1234-ã€‹â€œ1234â€
+//¸ß¾«ÔËËãÖ»ºÃ´¦ÀíÕıÊıÔËËã, ½«·ûºÅÎ»¶îÍâ´¦Àí
+//¶ÔÓÚ+-·¨£¬½«·ûºÅÎ»ºÍÊıÖµÎª·Ö¿ª£¬×ª»¯Îª¾ø¶ÔÖµÔËËã
+// stringÎªÔØÌå´æ´¢ 1234-¡·¡°1234¡±
 bool state = true;
 
 string Minusbigdata(const string &a, const string &b) {
@@ -14,7 +14,7 @@ string Minusbigdata(const string &a, const string &b) {
         if (a.size() == b.size() && a < b)
             return Minusbigdata(b, a);
         string res;
-        int t = 0; // tç”¨æ¥è¡¨ç¤ºå‡æ³•çš„å€Ÿä½
+        int t = 0; // tÓÃÀ´±íÊ¾¼õ·¨µÄ½èÎ»
         for (int i = a.size() - 1, j = b.size() - 1; i >= 0; --i, --j) {
             t = a[i] - '0' - t;
             if (j >= 0)
@@ -47,7 +47,7 @@ string Addbigdata(const string &a, const string &b) {
         res.push_back((t % 10 + '0'));
         t = t / 10;
     }
-    //åˆ¤æ–­é¦–ä½æ˜¯å¦è¿›ä½
+    //ÅĞ¶ÏÊ×Î»ÊÇ·ñ½øÎ»
     if (t) {
         res.push_back(t + '0');
     }
@@ -56,7 +56,7 @@ string Addbigdata(const string &a, const string &b) {
     return res;
 }
 
-//åˆ¤æ–­è¿ç®—ç»“æœæ˜¯å¦ä¸ºè´Ÿæ•°ï¼Œå¦‚æœæ˜¯è¿”å›true,å¦åˆ™ä¸ºfalse;
+//ÅĞ¶ÏÔËËã½á¹ûÊÇ·ñÎª¸ºÊı£¬Èç¹ûÊÇ·µ»Øtrue,·ñÔòÎªfalse;
 bool my_cmp(const string &a, const string &b, bool &flag) {
 
     if (a[0] == '+' && b[0] == '+')
@@ -72,14 +72,14 @@ bool my_cmp(const string &a, const string &b, bool &flag) {
         } else if (a.size() < b.size()) {
             return false;
         } else {
-            //åˆ©ç”¨å­—ç¬¦ä¸²åŒé•¿åº¦ä¸‹æ¯”è¾ƒè§„åˆ™ä¸æ•´æ•°æ¯”è¾ƒä¸€è‡´çš„ä¾¿åˆ©
+            //ÀûÓÃ×Ö·û´®Í¬³¤¶ÈÏÂ±È½Ï¹æÔòÓëÕûÊı±È½ÏÒ»ÖÂµÄ±ãÀû
             return a.substr(1) >= b.substr(1);
         }
     }
 }
 
 void input_handler(string &a, string &b, bool &sym, bool &judge) {
-    cout << "è¯·è¾“å…¥æ ‡è¯†ç¬¦å’Œä¸¤ä¸ªæ•´æ•°ï¼ˆ1ä¸ºåŠ æ³•ï¼Œ2ä¸ºå‡æ³•ï¼Œä»¥ç©ºæ ¼é—´éš”ã€‚å•ç‹¬ä¸€ä¸ª0ä¸ºé€€å‡ºï¼‰" << endl;
+    cout << "ÇëÊäÈë±êÊ¶·ûºÍÁ½¸öÕûÊı£¨1Îª¼Ó·¨£¬2Îª¼õ·¨£¬ÒÔ¿Õ¸ñ¼ä¸ô¡£µ¥¶ÀÒ»¸ö0ÎªÍË³ö£©" << endl;
     string x, y;
     int flag;
     cin >> flag;
@@ -87,20 +87,20 @@ void input_handler(string &a, string &b, bool &sym, bool &judge) {
     if (flag != 0) {
         cin >> x >> y;
         if (flag == 2) {
-            cout << x << "å’Œ" << y << "çš„å·®";
+            cout << x << "ºÍ" << y << "µÄ²î";
             if (y[0] == '-') {
                 y = y.substr(1);
             } else {
                 y = "-" + y;
             }
         } else
-            cout << x << "å’Œ" << y << "çš„å’Œ";
+            cout << x << "ºÍ" << y << "µÄºÍ";
     } else {
         state = false;
         return;
     }
 
-    //è¡¥å¡«å……ä½
+    //²¹Ìî³äÎ»
 
     if (x[0] != '-') {
         x = "+" + x;
@@ -120,9 +120,9 @@ int main() {
     while (true) {
         // string c,d;
         string a, b;
-        //æ§åˆ¶ç¬¦å·ä½è¾“å‡º
+        //¿ØÖÆ·ûºÅÎ»Êä³ö
         bool sym = false;
-        //åˆ¤æ–­ç»å¯¹å€¼æ˜¯åšå·®è¿˜æ˜¯ç›¸åŠ 
+        //ÅĞ¶Ï¾ø¶ÔÖµÊÇ×ö²î»¹ÊÇÏà¼Ó
         bool judge = false;
 
         input_handler(a, b, sym, judge);
@@ -139,9 +139,9 @@ int main() {
         if (res != "0")
             if (sym)
                 opt = '-';
-        cout << "çš„ç»“æœä¸º" << opt << res << endl;
+        cout << "µÄ½á¹ûÎª" << opt << res << endl;
     }
 
-    cout << "ç¨‹åºç»“æŸ" << endl;
+    cout << "³ÌĞò½áÊø" << endl;
     return 0;
 }
